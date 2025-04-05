@@ -1748,6 +1748,7 @@ class FreeplayState extends MusicBeatSubState
     if (change != 0 || force)
     {
       // Update the song capsules to reflect the new difficulty info.
+      generateSongList(null, false);
       for (songCapsule in grpCapsules.members)
       {
         if (songCapsule == null) continue;

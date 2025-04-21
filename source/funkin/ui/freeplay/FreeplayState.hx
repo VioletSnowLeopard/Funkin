@@ -1840,9 +1840,6 @@ class FreeplayState extends MusicBeatSubState
   {
     trace('RANDOM SELECTED');
 
-    busy = true;
-    letterSort.inputEnabled = false;
-
     var availableSongCapsules:Array<SongMenuItem> = grpCapsules.members.filter(function(cap:SongMenuItem) {
       // Dead capsules are ones which were removed from the list when changing filters.
       return cap.alive && cap.freeplayData != null;
@@ -1855,12 +1852,12 @@ class FreeplayState extends MusicBeatSubState
     if (availableSongCapsules.length == 0)
     {
       trace('No songs available!');
-      busy = false;
-      letterSort.inputEnabled = true;
       FunkinSound.playOnce(Paths.sound('cancelMenu'));
       return;
     }
 
+    busy = true;
+    letterSort.inputEnabled = false;
     var instrumentalChoices:Array<String> = ['default', 'random'];
 
     capsuleOptionsMenu = new CapsuleOptionsMenu(this, randomCapsule.x + 175, randomCapsule.y + 115, instrumentalChoices);
@@ -1880,6 +1877,7 @@ class FreeplayState extends MusicBeatSubState
   {
     cleanupCapsuleOptionsMenu();
     busy = true;
+    letterSort.inputEnabled = false;
 
     var targetSongCap:SongMenuItem = FlxG.random.getObject(availableSongCapsules);
     var targetSongId:String = targetSongCap?.freeplayData?.data.id ?? 'unknown';
@@ -1977,6 +1975,7 @@ class FreeplayState extends MusicBeatSubState
   function openInstrumentalList(cap:SongMenuItem, instrumentalIds:Array<String>):Void
   {
     busy = true;
+    letterSort.inputEnabled = false;
 
     capsuleOptionsMenu = new CapsuleOptionsMenu(this, cap.x + 175, cap.y + 115, instrumentalIds);
     capsuleOptionsMenu.cameras = [funnyCam];
@@ -1993,6 +1992,7 @@ class FreeplayState extends MusicBeatSubState
   public function cleanupCapsuleOptionsMenu():Void
   {
     this.busy = false;
+    this.letterSort.inputEnabled = true;
 
     if (capsuleOptionsMenu != null)
     {
